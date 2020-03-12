@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group 'task80'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+configurations {
+    agent
+}
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    agent 'org.aspectj:aspectjweaver:1.8.10'
+    compile("org.junit.jupiter:junit-jupiter:5.5.2",
+            "org.seleniumhq.selenium:selenium-java:4.0.0-alpha-1",
+            "org.robotframework:robotframework:3.1.2",
+            "org.apache.httpcomponents:httpclient:4.5.5"
+    )
+    test.doFirst {
+        jvmArgs "-javaagent:${configurations.agent.singleFile}"
+    }
+}
