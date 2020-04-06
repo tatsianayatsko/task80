@@ -1,10 +1,17 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Issue;
 import org.apache.http.HttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 
+@Epic("Task100")
+@ExtendWith(ScreenshotExtension.class)
 public class Tests {
   UploadPage uploadPage;
   File file;
@@ -12,6 +19,9 @@ public class Tests {
   private static final String DOWNLOADED_FILE_PATH = "src/test/resources/test/";
 
   @Test
+  @Feature("Upload")
+  @Issue("DARWIN-18003")
+  @Description("Upload file")
   protected void uploadTest(){
     uploadPage = new UploadPage()
         .goToUploadPage()
@@ -20,6 +30,9 @@ public class Tests {
   }
 
   @Test
+  @Feature("Upload")
+  @Issue("DARWIN-18002")
+  @Description("Upload file via hot keys")
   protected void uploadWithRobotTest(){
     uploadPage = new UploadPage()
         .goToUploadPage()
@@ -27,7 +40,10 @@ public class Tests {
     Assertions.assertEquals(uploadPage.getUploadedFile(),FILE_PATH.getName());
   }
 
- @Test
+  @Test
+  @Feature("Download")
+  @Issue("DARWIN-18001")
+  @Description("Download file")
   public void downloadTest(){
     String fileName = new DownloadPage().goToDownloadPage().clickFileLink();
     file = new File(DOWNLOADED_FILE_PATH + fileName);
@@ -36,6 +52,9 @@ public class Tests {
   }
 
   @Test
+  @Feature("Download")
+  @Issue("DARWIN-18000")
+  @Description("Check if it is possible to download file via http request")
   public void downloadFileThroughHTTPRequestTest() {
     HttpResponse response = new DownloadPage().goToDownloadPage().getHttpResponse();
     String contentType = response.getFirstHeader("Content-Type").getValue();
@@ -48,6 +67,5 @@ public class Tests {
   @AfterEach
   public void tearDown() {
     WebDriverSingleton.getInstance().closeWebDriver();
-    }
   }
-
+}
